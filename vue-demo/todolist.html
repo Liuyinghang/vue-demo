@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vue简易留言板</title>
+</head>
+<link rel="stylesheet" href="lib/bootstrap.min.css">
+<body>
+    <div class="container">
+        <form class="form-group">
+            <div><label for="username">用户名：</label>
+            <input id="username" type="text" class="form-control" v-model="name1"></div>
+            <div><label for="userage">年龄：</label>
+                <input id="userage" type="text" class="form-control" v-model="age1"></div>
+            <div style="padding-top: 20px;">
+                <input type="button" value="添加" class="btn btn-primary"@click="fn()">
+                <button class="btn btn-danger">重置</button>
+            </div>
+        </form>
+        <hr>
+        <div class="text-center">
+            <table class="table table-bordered text-center">
+                <caption class="text-info" style="font-size: 30px;">用户信息表</caption>
+                    <tr>
+                        <th  class="text-center">序号</th>
+                        <th  class="text-center">名字</th>
+                        <th  class="text-center">年龄</th>
+                        <th  class="text-center">操作</th>
+                    </tr>
+                <tbody>
+                    <tr v-for="item in arr">
+                        <td>{{$index}}</td>
+                        <td>{{item.name}}</td>
+                        <td>{{item.age}}</td>
+                        <td><button class="btn btn-danger"  data-toggle="modal" data-target="#mod1" @click="nowcur = $index">delete</button></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4"><button class="btn btn-danger text-danger pull-right" data-toggle="modal" data-target="#mod1" @click="nowcur=-5">delete all</button></td>
+                    </tr>
+                    <tr>
+                        <td colspan="4" class="text-info lead" v-show="arr.length == 0">暂无数据...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div role="dialog" class="modal fade bs-example-modal-sm" id="mod1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header text-center">
+                    <h4>确认删除么?</h4>
+                </div>
+                <div class="modal-body">
+                    <div style="padding-bottom: 20px;">
+                        <button data-dismiss="modal" class="btn btn-success pull-right">取消</button>
+                        <button data-dismiss="modal" class="btn btn-danger pull-right" style="margin-right: 10px;" @click="delMsg()">删除</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="lib/jquery-1.7.2.js"></script>
+<script src="lib/bootstrap.js"></script>
+<script src="vue.js"></script>
+<script>
+    new Vue({
+        data : {
+            arr : [],
+            name1 : '',
+            age1 : '',
+            nowcur : -10
+        },
+        methods : {
+            fn(){
+                this.arr.push({name :this.name1,age : this.age1});
+                this.name1 = '';
+                this.age1 = '';
+            },
+            delMsg(){
+                if(this.nowcur == -5){
+                    this.arr = [];
+                }else{
+                    this.arr.splice(this.nowcur,1);
+                }
+
+            }
+        }
+    }).$mount('body')
+</script>
+
+
+
+
+
+
+
+
+
+</html>
